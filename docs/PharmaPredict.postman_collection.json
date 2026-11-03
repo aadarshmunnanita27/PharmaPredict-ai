@@ -1,0 +1,39 @@
+{
+  "info": {
+    "name": "PharmaPredict AI API",
+    "description": "Requests for the Spring Boot API and Python ML service.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "apiUrl", "value": "http://localhost:8080" },
+    { "key": "mlUrl", "value": "http://localhost:8000" }
+  ],
+  "item": [
+    { "name": "Backend health", "request": { "method": "GET", "url": "{{apiUrl}}/actuator/health" } },
+    { "name": "Dashboard summary", "request": { "method": "GET", "url": "{{apiUrl}}/api/dashboard/summary" } },
+    { "name": "Sales trend", "request": { "method": "GET", "url": "{{apiUrl}}/api/dashboard/sales-trend" } },
+    { "name": "List medicines", "request": { "method": "GET", "url": "{{apiUrl}}/api/medicines" } },
+    { "name": "Low stock medicines", "request": { "method": "GET", "url": "{{apiUrl}}/api/medicines/low-stock" } },
+    {
+      "name": "Restock medicine 1",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"quantity\": 50\n}" },
+        "url": "{{apiUrl}}/api/medicines/1/restock"
+      }
+    },
+    {
+      "name": "Record sale",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"medicineId\": 1,\n  \"quantity\": 2,\n  \"soldAt\": \"2026-11-03\"\n}" },
+        "url": "{{apiUrl}}/api/sales"
+      }
+    },
+    { "name": "Forecast medicine 1", "request": { "method": "GET", "url": "{{apiUrl}}/api/forecasts/1?days=7" } },
+    { "name": "ML model info", "request": { "method": "GET", "url": "{{mlUrl}}/model-info" } },
+    { "name": "ML health", "request": { "method": "GET", "url": "{{mlUrl}}/health" } }
+  ]
+}

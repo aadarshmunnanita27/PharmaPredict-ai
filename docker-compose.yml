@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: pharmapredict
+      POSTGRES_USER: pharmapredict
+      POSTGRES_PASSWORD: pharmapredict
+    ports:
+      - "5432:5432"
+    volumes:
+      - pharma_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pharmapredict -d pharmapredict"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  ml-service:
+    build: ./ml-service
+    ports:
+      - "8000:8000"
+
+  backend:
+    build: ./backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/pharmapredict
+      SPRING_DATASOURCE_USERNAME: pharmapredict
+      SPRING_DATASOURCE_PASSWORD: pharmapredict
+      ML_SERVICE_URL: http://ml-service:8000
+      APP_CORS_ORIGINS: http://localhost:5173,http://localhost:4173
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      ml-service:
+        condition: service_started
+
+volumes:
+  pharma_pg_data:

@@ -1,0 +1,25 @@
+# Node
+node_modules/
+frontend/dist/
+frontend/.env
+
+# Java / Maven
+backend/target/
+*.class
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
